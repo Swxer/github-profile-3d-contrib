@@ -184,6 +184,7 @@ export const addDefines = (
             addPatternForBitmap(defs, info.right, contribLevel, 'right');
         }
     }
+
 };
 
 export const create3DContrib = (
@@ -212,6 +213,22 @@ export const create3DContrib = (
 
     const offsetX = dx * 7;
     const offsetY = height - (weekcount + 7) * dy;
+
+    if (settings.fileName === 'profile-city.svg') {
+        const starGroup = svg.append('g');
+        for (let i = 0; i < 75; i++) {
+            const sx = seededRandom(i * 7 + 100) * width;
+            const sy = seededRandom(i * 13 + 200) * (height * 0.4);
+            const sr = 0.5 + seededRandom(i * 3 + 300) * 0.5;
+            const so = 0.2 + seededRandom(i * 11 + 400) * 0.4;
+            starGroup.append('circle')
+                .attr('cx', util.toFixed(sx))
+                .attr('cy', util.toFixed(sy))
+                .attr('r', util.toFixed(sr))
+                .attr('fill', '#ffffe0')
+                .attr('opacity', util.toFixed(so));
+        }
+    }
 
     const group = svg.append('g');
 
@@ -372,7 +389,7 @@ export const create3DContrib = (
                 .attr('repeatCount', '1');
         }
 
-        if (contribLevel !== 0) {
+        if (settings.fileName === 'profile-city.svg' && contribLevel !== 0) {
             const winW = 4;
             const winH = 2.5;
             const floorStep = 5;
@@ -393,6 +410,58 @@ export const create3DContrib = (
             const rightLightGroup = bar
                 .append('g')
                 .attr('transform', rightPanel.attr('transform') || '');
+            let defs = svg.select<SVGDefsElement>('defs');
+            if (defs.empty()) {
+                defs = svg.append('defs');
+            }
+            const clipLeftId = `clip-city-L-${week}-${dayOfWeek}`;
+            const clipRightId = `clip-city-R-${week}-${dayOfWeek}`;
+            const clipLeft = defs.append('clipPath').attr('id', clipLeftId);
+            const clipLeftRect = clipLeft
+                .append('rect')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', util.toFixed(widthLeft))
+                .attr(
+                    'height',
+                    util.toFixed(isAnimate ? 3 / scaleLeft : heightLeft),
+                );
+            if (isAnimate && contribLevel !== 0) {
+                clipLeftRect
+                    .append('animate')
+                    .attr('attributeName', 'height')
+                    .attr(
+                        'values',
+                        `${util.toFixed(3 / scaleLeft)};${util.toFixed(heightLeft)}`,
+                    )
+                    .attr('dur', '3s')
+                    .attr('repeatCount', '1')
+                    .attr('fill', 'freeze');
+            }
+            const clipRight = defs.append('clipPath').attr('id', clipRightId);
+            const clipRightRect = clipRight
+                .append('rect')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', util.toFixed(widthRight))
+                .attr(
+                    'height',
+                    util.toFixed(isAnimate ? 3 / scaleRight : heightRight),
+                );
+            if (isAnimate && contribLevel !== 0) {
+                clipRightRect
+                    .append('animate')
+                    .attr('attributeName', 'height')
+                    .attr(
+                        'values',
+                        `${util.toFixed(3 / scaleRight)};${util.toFixed(heightRight)}`,
+                    )
+                    .attr('dur', '3s')
+                    .attr('repeatCount', '1')
+                    .attr('fill', 'freeze');
+            }
+            leftLightGroup.attr('clip-path', `url(#${clipLeftId})`);
+            rightLightGroup.attr('clip-path', `url(#${clipRightId})`);
             const leftColWidth = widthLeft / leftCols;
             const rightColWidth = widthRight / rightCols;
             for (let row = 0; row < leftNumRows; row++) {
@@ -406,7 +475,24 @@ export const create3DContrib = (
                     const seed = week * 1000 + col * 31 + row * 17;
                     const color =
                         seededRandom(seed) < 0.4 ? '#e6d96a' : '#0a0412';
-                    addLight(leftLightGroup, x, y, winW, winH, color);
+                    if (color === '#e6d96a') {
+                        leftLightGroup.append('rect')
+                            .attr('x', util.toFixed(x - 0.5))
+                            .attr('y', util.toFixed(y - 0.5))
+                            .attr('width', util.toFixed(winW + 1))
+                            .attr('height', util.toFixed(winH + 1))
+                            .attr('fill', '#ffe600')
+                            .attr('opacity', '0.35');
+                        leftLightGroup.append('rect')
+                            .attr('x', util.toFixed(x))
+                            .attr('y', util.toFixed(y))
+                            .attr('width', util.toFixed(winW))
+                            .attr('height', util.toFixed(winH))
+                            .attr('fill', '#e6d96a')
+                            .attr('class', 'light-glow');
+                    } else {
+                        addLight(leftLightGroup, x, y, winW, winH, color);
+                    }
                 }
             }
             for (let row = 0; row < rightNumRows; row++) {
@@ -420,9 +506,27 @@ export const create3DContrib = (
                     const seed = week * 1000 + col * 31 + row * 17 + 1;
                     const color =
                         seededRandom(seed) < 0.4 ? '#e6d96a' : '#0a0412';
-                    addLight(rightLightGroup, x, y, winW, winH, color);
+                    if (color === '#e6d96a') {
+                        rightLightGroup.append('rect')
+                            .attr('x', util.toFixed(x - 0.5))
+                            .attr('y', util.toFixed(y - 0.5))
+                            .attr('width', util.toFixed(winW + 1))
+                            .attr('height', util.toFixed(winH + 1))
+                            .attr('fill', '#ffe600')
+                            .attr('opacity', '0.35');
+                        rightLightGroup.append('rect')
+                            .attr('x', util.toFixed(x))
+                            .attr('y', util.toFixed(y))
+                            .attr('width', util.toFixed(winW))
+                            .attr('height', util.toFixed(winH))
+                            .attr('fill', '#e6d96a')
+                            .attr('class', 'light-glow');
+                    } else {
+                        addLight(rightLightGroup, x, y, winW, winH, color);
+                    }
                 }
             }
         }
+
     });
 };

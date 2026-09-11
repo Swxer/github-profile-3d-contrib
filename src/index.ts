@@ -109,14 +109,14 @@ export const main = async (): Promise<void> => {
                 create.createSvg(userInfo, template.GitBlockSettings, true),
             );
 
-            // Sunset
+            // City
             f.writeFile(
-                'profile-sunset-animate.svg',
-                create.createSvg(userInfo, template.SunsetSettings, true),
+                'profile-city-animate.svg',
+                create.createSvg(userInfo, template.CitySettings, true),
             );
             f.writeFile(
-                'profile-sunset.svg',
-                create.createSvg(userInfo, template.SunsetSettings, false),
+                'profile-city.svg',
+                create.createSvg(userInfo, template.CitySettings, false),
             );
         }
     } catch (error) {
