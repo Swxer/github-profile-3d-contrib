@@ -37,6 +37,10 @@ const createColors = (settings: type.Settings): string => {
             `fill-opacity: 0.5;`,
             '}',
         );
+        cssColors.push(
+            '.light-glow {',
+            '}',
+        );
     }
 
     if (settings.type == 'normal') {

@@ -149,6 +149,28 @@ const addPatternForBitmap = (
         .attr('d', path.toString());
 };
 
+const seededRandom = (seed: number): number => {
+    const x = Math.sin(seed * 9301 + 49297) * 233280;
+    return x - Math.floor(x);
+};
+
+const addLight = (
+    group: d3.Selection<SVGGElement, unknown, null, unknown>,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    color: string,
+): void => {
+    group.append('rect')
+        .attr('x', util.toFixed(x))
+        .attr('y', util.toFixed(y))
+        .attr('width', util.toFixed(w))
+        .attr('height', util.toFixed(h))
+        .attr('fill', color)
+        .attr('class', 'light-glow');
+};
+
 export const addDefines = (
     svg: d3.Selection<SVGSVGElement, unknown, null, unknown>,
     settings: type.Settings,
@@ -347,6 +369,40 @@ export const create3DContrib = (
                 )
                 .attr('dur', '3s')
                 .attr('repeatCount', '1');
+        }
+
+        if (contribLevel !== 0) {
+            const winW = 3;
+            const winH = 1.5;
+            const gap = 1;
+            const leftCols = 2;
+            const rightCols = 2;
+            const leftNumRows = heightLeft >= (winH + gap) ? Math.min(10, Math.floor(heightLeft / (winH + gap))) : 0;
+            const rightNumRows = heightRight >= (winH + gap) ? Math.min(10, Math.floor(heightRight / (winH + gap))) : 0;
+            const leftLightGroup = bar.append('g').attr('transform', leftPanel.attr('transform') || '');
+            const rightLightGroup = bar.append('g').attr('transform', rightPanel.attr('transform') || '');
+            const leftColWidth = widthLeft / leftCols;
+            const leftFloorHeight = heightLeft / Math.max(1, leftNumRows);
+            const rightColWidth = widthRight / rightCols;
+            const rightFloorHeight = heightRight / Math.max(1, rightNumRows);
+            for (let row = 0; row < leftNumRows; row++) {
+                for (let col = 0; col < leftCols; col++) {
+                    const x = col * leftColWidth + (leftColWidth - winW) / 2;
+                    const y = row * leftFloorHeight + (leftFloorHeight - winH) / 2;
+                    const seed = week * 1000 + col * 31 + row * 17;
+                    const color = seededRandom(seed) < 0.65 ? '#ffe600' : '#0a0412';
+                    addLight(leftLightGroup, x, y, winW, winH, color);
+                }
+            }
+            for (let row = 0; row < rightNumRows; row++) {
+                for (let col = 0; col < rightCols; col++) {
+                    const x = col * rightColWidth + (rightColWidth - winW) / 2;
+                    const y = row * rightFloorHeight + (rightFloorHeight - winH) / 2;
+                    const seed = week * 1000 + col * 31 + row * 17 + 1;
+                    const color = seededRandom(seed) < 0.65 ? '#ffe600' : '#0a0412';
+                    addLight(rightLightGroup, x, y, winW, winH, color);
+                }
+            }
         }
     });
 };
