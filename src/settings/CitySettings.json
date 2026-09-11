@@ -6,5 +6,8 @@
   "strongColor": "#00e5ff",
   "weakColor": "#ffffe0",
   "radarColor": "#ffe600",
-  "contribColors": ["#120626", "#1d0c3c", "#2d1454", "#3f1a6d", "#542087"]
+  "contribColors": ["#120626", "#1d0c3c", "#2d1454", "#3f1a6d", "#542087"],
+  "windowLitColor": "#e6d96a",
+  "windowDarkColor": "#0a0412",
+  "windowHaloOpacity": "0.35"
 }

@@ -78,6 +78,11 @@ export interface BaseSettings extends RadarContribSettings, PieLangSettings {
         issue: string;
         contrib: string;
     };
+
+    // City theme extras (optional, used by profile-city.svg)
+    windowLitColor?: string;
+    windowDarkColor?: string;
+    windowHaloOpacity?: string;
 }
 
 export interface NormalColorSettings extends BaseSettings {
