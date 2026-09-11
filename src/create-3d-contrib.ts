@@ -162,7 +162,8 @@ const addLight = (
     h: number,
     color: string,
 ): void => {
-    group.append('rect')
+    group
+        .append('rect')
         .attr('x', util.toFixed(x))
         .attr('y', util.toFixed(y))
         .attr('width', util.toFixed(w))
@@ -372,34 +373,53 @@ export const create3DContrib = (
         }
 
         if (contribLevel !== 0) {
-            const winW = 3;
-            const winH = 1.5;
-            const gap = 1;
+            const winW = 4;
+            const winH = 2.5;
+            const floorStep = 5;
+            const margin = 3;
             const leftCols = 2;
             const rightCols = 2;
-            const leftNumRows = heightLeft >= (winH + gap) ? Math.min(10, Math.floor(heightLeft / (winH + gap))) : 0;
-            const rightNumRows = heightRight >= (winH + gap) ? Math.min(10, Math.floor(heightRight / (winH + gap))) : 0;
-            const leftLightGroup = bar.append('g').attr('transform', leftPanel.attr('transform') || '');
-            const rightLightGroup = bar.append('g').attr('transform', rightPanel.attr('transform') || '');
+            const leftNumRows = Math.max(
+                0,
+                Math.floor((heightLeft - 2 * margin) / floorStep),
+            );
+            const rightNumRows = Math.max(
+                0,
+                Math.floor((heightRight - 2 * margin) / floorStep),
+            );
+            const leftLightGroup = bar
+                .append('g')
+                .attr('transform', leftPanel.attr('transform') || '');
+            const rightLightGroup = bar
+                .append('g')
+                .attr('transform', rightPanel.attr('transform') || '');
             const leftColWidth = widthLeft / leftCols;
-            const leftFloorHeight = heightLeft / Math.max(1, leftNumRows);
             const rightColWidth = widthRight / rightCols;
-            const rightFloorHeight = heightRight / Math.max(1, rightNumRows);
             for (let row = 0; row < leftNumRows; row++) {
                 for (let col = 0; col < leftCols; col++) {
                     const x = col * leftColWidth + (leftColWidth - winW) / 2;
-                    const y = row * leftFloorHeight + (leftFloorHeight - winH) / 2;
+                    const y =
+                        heightLeft -
+                        margin -
+                        (row + 1) * floorStep +
+                        (floorStep - winH) / 2;
                     const seed = week * 1000 + col * 31 + row * 17;
-                    const color = seededRandom(seed) < 0.65 ? '#ffe600' : '#0a0412';
+                    const color =
+                        seededRandom(seed) < 0.4 ? '#ffe600' : '#0a0412';
                     addLight(leftLightGroup, x, y, winW, winH, color);
                 }
             }
             for (let row = 0; row < rightNumRows; row++) {
                 for (let col = 0; col < rightCols; col++) {
                     const x = col * rightColWidth + (rightColWidth - winW) / 2;
-                    const y = row * rightFloorHeight + (rightFloorHeight - winH) / 2;
+                    const y =
+                        heightRight -
+                        margin -
+                        (row + 1) * floorStep +
+                        (floorStep - winH) / 2;
                     const seed = week * 1000 + col * 31 + row * 17 + 1;
-                    const color = seededRandom(seed) < 0.65 ? '#ffe600' : '#0a0412';
+                    const color =
+                        seededRandom(seed) < 0.4 ? '#ffe600' : '#0a0412';
                     addLight(rightLightGroup, x, y, winW, winH, color);
                 }
             }
