@@ -405,7 +405,7 @@ export const create3DContrib = (
                         (floorStep - winH) / 2;
                     const seed = week * 1000 + col * 31 + row * 17;
                     const color =
-                        seededRandom(seed) < 0.4 ? '#ffe600' : '#0a0412';
+                        seededRandom(seed) < 0.4 ? '#e6d96a' : '#0a0412';
                     addLight(leftLightGroup, x, y, winW, winH, color);
                 }
             }
@@ -419,7 +419,7 @@ export const create3DContrib = (
                         (floorStep - winH) / 2;
                     const seed = week * 1000 + col * 31 + row * 17 + 1;
                     const color =
-                        seededRandom(seed) < 0.4 ? '#ffe600' : '#0a0412';
+                        seededRandom(seed) < 0.4 ? '#e6d96a' : '#0a0412';
                     addLight(rightLightGroup, x, y, winW, winH, color);
                 }
             }

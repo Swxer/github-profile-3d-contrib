@@ -2,9 +2,9 @@
   "type": "normal",
   "fileName": "profile-sunset.svg",
   "backgroundColor": "#0a0618",
-  "foregroundColor": "#ff7e5f",
-  "strongColor": "#ff9e5d",
+  "foregroundColor": "#ff529a",
+  "strongColor": "#00e5ff",
   "weakColor": "#ffffe0",
-  "radarColor": "#ff6e40",
-  "contribColors": ["#1a0a3e", "#2d1b69", "#4a2080", "#6b30a0", "#8b40c0"]
+  "radarColor": "#ffe600",
+  "contribColors": ["#120626", "#1d0c3c", "#2d1454", "#3f1a6d", "#542087"]
 }
