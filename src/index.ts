@@ -108,6 +108,16 @@ export const main = async (): Promise<void> => {
                 'profile-gitblock.svg',
                 create.createSvg(userInfo, template.GitBlockSettings, true),
             );
+
+            // Sunset
+            f.writeFile(
+                'profile-sunset-animate.svg',
+                create.createSvg(userInfo, template.SunsetSettings, true),
+            );
+            f.writeFile(
+                'profile-sunset.svg',
+                create.createSvg(userInfo, template.SunsetSettings, false),
+            );
         }
     } catch (error) {
         console.error(error);
