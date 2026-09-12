@@ -1,5 +1,9 @@
 # GitHub Profile 3D Contrib
 
+> [!NOTE]
+> ### 🏙️ Custom City Theme
+> This project is originally created by [yoshi389111/github-profile-3d-contrib](https://github.com/yoshi389111/github-profile-3d-contrib). I customised it to add a custom **City Theme** with day or night mode, depending on your website's appearance. You can see it live on my profile!
+
 ![svg](https://raw.githubusercontent.com/yoshi389111/github-profile-3d-contrib/main/docs/demo/profile-gitblock.svg)
 
 <!-- Language code order (except English) -->
