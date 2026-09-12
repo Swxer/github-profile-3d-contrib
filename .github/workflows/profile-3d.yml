@@ -1,0 +1,35 @@
+name: GitHub 3D Contrib Skyline
+
+on:
+  schedule:
+    # 14:00 UTC = 12:00 AM Sydney (AEST)
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: generate-3d-contrib
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate 3D Contribution Graph
+        run: npm run dev -- ${GITHUB_REPOSITORY_OWNER}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Push Generated SVG
+        run: |
+          git config local user.email "action@github.com"
+          git config local user.name "GitHub Action"
+          git add -f profile-3d-contrib/
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: update 3d contribution skyline"
+          git push
