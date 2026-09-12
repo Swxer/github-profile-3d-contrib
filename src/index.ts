@@ -118,6 +118,16 @@ export const main = async (): Promise<void> => {
                 'profile-city.svg',
                 create.createSvg(userInfo, template.CitySettings, false),
             );
+
+            // City Light
+            f.writeFile(
+                'profile-city-light-animate.svg',
+                create.createSvg(userInfo, template.CityLightSettings, true),
+            );
+            f.writeFile(
+                'profile-city-light.svg',
+                create.createSvg(userInfo, template.CityLightSettings, false),
+            );
         }
     } catch (error) {
         console.error(error);

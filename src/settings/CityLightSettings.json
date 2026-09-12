@@ -1,0 +1,20 @@
+{
+  "type": "dual_shadow",
+  "fileName": "profile-city-light.svg",
+  "backgroundColor": "#B3EBF2",
+  "foregroundColor": "#1f2328",
+  "strongColor": "#0969da",
+  "weakColor": "#424a53",
+  "radarColor": "#0969da",
+  "gridTopColor": "#d0d7de",
+  "gridSideColor": "#d0d7de",
+  "topColorStart": "#748091",
+  "topColorEnd": "#E4E9F0",
+  "leftFaceShadow": "#94a3b8",
+  "rightFaceShadow": "#475569",
+  "windowLitColor": "#24292f",
+  "windowDarkColor": "#24292f",
+  "windowHaloOpacity": "0",
+  "grassColor": "#8bf07d",
+  "grassSideColor": "#258c18"
+}

@@ -25,28 +25,57 @@ const addDualShadowColor = (
 ): void => {
     let fillColor: string;
 
+    const buildingLeftColor = settings.buildingLeftColor;
+    const buildingRightColor = settings.buildingRightColor;
+    const hasDirectFaceColors =
+        buildingLeftColor !== undefined && buildingRightColor !== undefined;
+
     if (contribLevel === 0) {
-        fillColor =
-            panel === 'top' ? settings.gridTopColor : settings.gridSideColor;
+        if (settings.grassColor) {
+            fillColor =
+                panel === 'top'
+                    ? settings.grassColor
+                    : (settings.grassSideColor ?? settings.gridSideColor);
+        } else if (hasDirectFaceColors) {
+            fillColor =
+                panel === 'top'
+                    ? (settings.buildingTopColor ?? settings.gridTopColor)
+                    : panel === 'left'
+                      ? buildingLeftColor
+                      : buildingRightColor;
+        } else {
+            fillColor =
+                panel === 'top'
+                    ? settings.gridTopColor
+                    : settings.gridSideColor;
+        }
     } else {
         const t = (contribLevel - 1) / 3;
-        const topColor = d3.interpolateRgb(
-            settings.topColorStart,
-            settings.topColorEnd,
-        )(t);
 
         if (panel === 'top') {
-            fillColor = topColor;
+            // Soften the cyan shift to preserve purple roof tones
+            fillColor = d3.interpolateRgb(
+                settings.topColorStart,
+                settings.topColorEnd,
+            )(t * 0.85);
         } else if (panel === 'left') {
+            const baseColor = hasDirectFaceColors
+                ? buildingLeftColor
+                : settings.leftFaceShadow;
+
             fillColor = d3.interpolateRgb(
-                topColor,
-                settings.leftFaceShadow,
-            )(0.65);
+                baseColor,
+                settings.topColorEnd,
+            )(t * 0.3);
         } else {
+            const baseColor = hasDirectFaceColors
+                ? buildingRightColor
+                : settings.rightFaceShadow;
+
             fillColor = d3.interpolateRgb(
-                topColor,
-                settings.rightFaceShadow,
-            )(0.73);
+                baseColor,
+                settings.topColorEnd,
+            )(t * 0.17);
         }
     }
 
@@ -581,7 +610,7 @@ export const create3DContrib = (
                 .attr('repeatCount', '1');
         }
 
-        if (settings.fileName === 'profile-city.svg' && contribLevel !== 0) {
+        if (settings.fileName?.includes('profile-city') && contribLevel !== 0) {
             renderCityWindows(
                 svg,
                 bar,

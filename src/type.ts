@@ -173,6 +173,14 @@ export interface DualShadowColorSettings extends BaseSettings {
     leftFaceShadow: string;
     rightFaceShadow: string;
 
+    // Direct face colors (optional, overrides gradient blending when present)
+    buildingTopColor?: string;
+    buildingLeftColor?: string;
+    buildingRightColor?: string;
+
+    grassColor?: string;
+    grassSideColor?: string;
+
     darkMode?: DualShadowColorSettings;
 }
 
