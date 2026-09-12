@@ -6,6 +6,9 @@ on:
     - cron: "0 14 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,10 +29,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commit and Push Generated SVG
+      - name: Commit & Push
         run: |
-          git config local user.email "action@github.com"
-          git config local user.name "GitHub Action"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f profile-3d-contrib/
-          git diff --quiet && git diff --staged --quiet || git commit -m "chore: update 3d contribution skyline"
-          git push
+          if git commit -m "chore: update 3d contribution skyline"; then
+            git push
+          fi
