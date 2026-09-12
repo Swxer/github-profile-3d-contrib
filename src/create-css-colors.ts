@@ -135,6 +135,11 @@ const createColors = (settings: type.Settings): string => {
         });
     }
 
+    if (settings.type == 'dual_shadow') {
+        // Dual shadow theme uses inline fill attributes computed in create-3d-contrib.ts.
+        // No .cont-* CSS classes needed — background/foreground/radar already handled above.
+    }
+
     if (settings.type == 'rainbow') {
         const hues = [0, 60, 120, 180, 240, 300, 360];
         const darkerList: ReadonlyArray<[string, number]> = [

@@ -31,4 +31,4 @@ import gitBlockSettings from './settings/GitBlockSettings.json';
 export const GitBlockSettings = gitBlockSettings as type.BitmapPatternSettings;
 
 import citySettings from './settings/CitySettings.json';
-export const CitySettings = citySettings as type.NormalColorSettings;
+export const CitySettings = citySettings as type.DualShadowColorSettings;

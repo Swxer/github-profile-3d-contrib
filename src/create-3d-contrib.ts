@@ -17,6 +17,42 @@ const addNormalColor = (
     path.attr('class', `cont-${panel}-${contribLevel}`);
 };
 
+const addDualShadowColor = (
+    path: d3.Selection<SVGRectElement, unknown, null, unknown>,
+    contribLevel: number,
+    panel: PanelType,
+    settings: type.DualShadowColorSettings,
+): void => {
+    let fillColor: string;
+
+    if (contribLevel === 0) {
+        fillColor =
+            panel === 'top' ? settings.gridTopColor : settings.gridSideColor;
+    } else {
+        const t = (contribLevel - 1) / 3;
+        const topColor = d3.interpolateRgb(
+            settings.topColorStart,
+            settings.topColorEnd,
+        )(t);
+
+        if (panel === 'top') {
+            fillColor = topColor;
+        } else if (panel === 'left') {
+            fillColor = d3.interpolateRgb(
+                topColor,
+                settings.leftFaceShadow,
+            )(0.65);
+        } else {
+            fillColor = d3.interpolateRgb(
+                topColor,
+                settings.rightFaceShadow,
+            )(0.73);
+        }
+    }
+
+    path.attr('fill', fillColor);
+};
+
 const decideSeasonPatternNo = (date: Date): number => {
     const sunday = new Date(date.getTime());
     sunday.setDate(sunday.getDate() - sunday.getDay());
@@ -203,10 +239,7 @@ const createWindowClipPath = (
         .attr('x', 0)
         .attr('y', 0)
         .attr('width', util.toFixed(faceWidth))
-        .attr(
-            'height',
-            util.toFixed(isAnimate ? animStartHeight : faceHeight),
-        );
+        .attr('height', util.toFixed(isAnimate ? animStartHeight : faceHeight));
     if (isAnimate && contribLevel !== 0) {
         clipRect
             .append('animate')
@@ -254,8 +287,7 @@ const renderWindows = (
                 (row + 1) * floorStep +
                 (floorStep - winH) / 2;
             const seed = week * 1000 + col * 31 + row * 17 + seedOffset;
-            const color =
-                seededRandom(seed) < 0.4 ? litColor : darkColor;
+            const color = seededRandom(seed) < 0.4 ? litColor : darkColor;
             if (color === litColor) {
                 group
                     .append('rect')
@@ -328,14 +360,8 @@ const renderCityWindows = (
         contribLevel,
     );
 
-    leftLightGroup.attr(
-        'clip-path',
-        `url(#clip-city-L-${week}-${dayOfWeek})`,
-    );
-    rightLightGroup.attr(
-        'clip-path',
-        `url(#clip-city-R-${week}-${dayOfWeek})`,
-    );
+    leftLightGroup.attr('clip-path', `url(#clip-city-L-${week}-${dayOfWeek})`);
+    rightLightGroup.attr('clip-path', `url(#clip-city-R-${week}-${dayOfWeek})`);
 
     renderWindows(leftLightGroup, widthLeft, heightLeft, week, settings, false);
     renderWindows(
@@ -458,6 +484,8 @@ export const create3DContrib = (
             addRainbowColor(topPanel, contribLevel, 'top', settings, week);
         } else if (settings.type === 'bitmap') {
             addBitmapPattern(topPanel, contribLevel, 'top');
+        } else if (settings.type === 'dual_shadow') {
+            addDualShadowColor(topPanel, contribLevel, 'top', settings);
         }
 
         const widthLeft =
@@ -488,6 +516,8 @@ export const create3DContrib = (
             addRainbowColor(leftPanel, contribLevel, 'left', settings, week);
         } else if (settings.type === 'bitmap') {
             addBitmapPattern(leftPanel, contribLevel, 'left');
+        } else if (settings.type === 'dual_shadow') {
+            addDualShadowColor(leftPanel, contribLevel, 'left', settings);
         }
         if (isAnimate && contribLevel !== 0) {
             leftPanel
@@ -534,6 +564,8 @@ export const create3DContrib = (
             addRainbowColor(rightPanel, contribLevel, 'right', settings, week);
         } else if (settings.type === 'bitmap') {
             addBitmapPattern(rightPanel, contribLevel, 'right');
+        } else if (settings.type === 'dual_shadow') {
+            addDualShadowColor(rightPanel, contribLevel, 'right', settings);
         }
         if (isAnimate && contribLevel !== 0) {
             rightPanel

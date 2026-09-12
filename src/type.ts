@@ -158,6 +158,24 @@ export interface BitmapPatternSettings extends BaseSettings {
     darkMode?: BitmapPatternSettings;
 }
 
+export interface DualShadowColorSettings extends BaseSettings {
+    type: 'dual_shadow';
+
+    // Base grid (0 contributions)
+    gridTopColor: string;
+    gridSideColor: string;
+
+    // Top face gradient (levels 1-4)
+    topColorStart: string;
+    topColorEnd: string;
+
+    // Side face shadow blending
+    leftFaceShadow: string;
+    rightFaceShadow: string;
+
+    darkMode?: DualShadowColorSettings;
+}
+
 export interface PieLangOnlySettings extends PieLangSettings {
     type: 'pie_lang_only';
 
@@ -174,7 +192,8 @@ export type FullSettings =
     | NormalColorSettings
     | SeasonColorSettings
     | RainbowColorSettings
-    | BitmapPatternSettings;
+    | BitmapPatternSettings
+    | DualShadowColorSettings;
 
 export type Settings =
     | FullSettings
