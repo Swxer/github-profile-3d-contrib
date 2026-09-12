@@ -19,7 +19,8 @@ const createColors = (settings: type.Settings): string => {
         settings.type == 'normal' ||
         settings.type == 'season' ||
         settings.type == 'rainbow' ||
-        settings.type == 'bitmap'
+        settings.type == 'bitmap' ||
+        settings.type == 'dual_shadow'
     ) {
         cssColors.push(`.fill-strong { fill: ${settings.strongColor}; }`);
     }
@@ -37,10 +38,7 @@ const createColors = (settings: type.Settings): string => {
             `fill-opacity: 0.5;`,
             '}',
         );
-        cssColors.push(
-            '.light-glow {',
-            '}',
-        );
+        cssColors.push('.light-glow {', '}');
     }
 
     if (settings.type == 'normal') {
