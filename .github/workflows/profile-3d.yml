@@ -2,8 +2,7 @@ name: GitHub 3D Contrib Skyline
 
 on:
   schedule:
-    # 08:00 UTC = 6:00 PM Sydney | 14:00 UTC = 12:00 AM Sydney
-    - cron: "0 8,14 * * *"
+    - cron: "0 2,14 * * *"
   workflow_dispatch:
 
 permissions:
