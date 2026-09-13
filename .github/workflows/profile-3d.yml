@@ -2,8 +2,8 @@ name: GitHub 3D Contrib Skyline
 
 on:
   schedule:
-    # 14:00 UTC = 12:00 AM Sydney (AEST)
-    - cron: "0 14 * * *"
+    # 13:00 UTC = 11:00 PM AEST / 12:00 AM AEDT (Sydney Time)
+    - cron: "0 13 * * *"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,9 @@ jobs:
     name: generate-3d-contrib
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,6 +36,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f profile-3d-contrib/
-          if git commit -m "chore: update 3d contribution skyline"; then
+          if git commit -m "chore: update 3d contribution skyline [skip ci]"; then
             git push
           fi
